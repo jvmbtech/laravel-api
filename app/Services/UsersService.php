@@ -11,4 +11,14 @@ class UsersService
     {
         return User::all();
     }
+
+    public function create(User $user): User
+    {
+        try {
+            $user->saveOrFail();
+        } catch (\Exception $ex) {
+            throw new \Exception($ex->getMessage()); 
+        }
+        return $user;
+    }
 }

@@ -9,3 +9,4 @@ Route::get('/status', function (Request $request) {
 });
 
 Route::get('/users', [UsersController::class, 'index']);
+Route::post('/users/create', [UsersController::class, 'store']);

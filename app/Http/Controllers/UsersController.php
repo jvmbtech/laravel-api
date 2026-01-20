@@ -2,21 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Services\UsersService;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public $userService;
-
-    public function __construct(UsersService $userService)
+    public function index(UsersService $userService)
     {
-        $this->userService = $userService;
+        $users = $userService->findAll();
+        return response()->json($users);
     }
 
-    public function index()
+    public function store(UsersService $userService, Request $request)
     {
-        $users = $this->userService->findAll()->paginate(3);
-        return response()->json($users);
+        try {
+            $user = new User();
+            $user->fill([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+                'cpf' => $request->input('cpf'),
+                'phone' => $request->input('phone'),
+                'cellphone' => $request->input('cellphone'),
+                'role' => 'user',
+            ]);
+
+            $userService->create($user);
+            return response()->json($user);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error_message' => 'Não foi possível realizar o cadastro de usuário',
+            ], 500);
+        }
     }
 }
