@@ -49,4 +49,41 @@ class UsersController extends Controller
             ], 500);
         }
     }
+
+    public function update(UsersService $userService, int $userId, Request $request)
+    {
+        try {
+            $currentUser = $userService->findById($userId);
+            
+            $properties = [];
+
+            if ($request->input('name')) {
+                $properties['name'] = $request->input('name');
+            }
+
+            if ($request->input('email')) {
+                $properties['email'] = $request->input('email');
+            }
+            
+            if ($request->input('cpf')) {
+                $properties['cpf'] = $request->input('cpf');
+            }
+
+            if ($request->input('phone')) {
+                $properties['phone'] = $request->input('phone');
+            }
+
+            if ($request->input('cellphone')) {
+                $properties['cellphone'] = $request->input('cellphone');
+            }
+
+            $user = $userService->update($currentUser, $properties);
+
+            return response()->json($user);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error_message' => 'Não foi possível editar o cadastro do usuário',
+            ], 500);
+        }
+    }
 }

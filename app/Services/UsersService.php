@@ -33,4 +33,14 @@ class UsersService
         }
         return $user;
     }
+
+    public function update(User $user, array $properties): User
+    {
+        try {
+            $user->updateOrFail($properties);
+        } catch (\Exception $ex) {
+            throw new \Exception($ex->getMessage());
+        }
+        return $user;
+    }
 }
