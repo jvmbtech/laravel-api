@@ -36,4 +36,17 @@ class UsersController extends Controller
             ], 500);
         }
     }
+
+    public function show(UsersService $userService, int $userId)
+    {
+        try {
+            $user = $userService->findById($userId);
+            
+            return response()->json($user);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error_message' => 'Não foi possível realizar o cadastro de usuário',
+            ], 500);
+        }
+    }
 }

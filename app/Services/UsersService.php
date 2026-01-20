@@ -12,12 +12,24 @@ class UsersService
         return User::all();
     }
 
+    public function findById(int $userId): User
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $user;
+    }
+
     public function create(User $user): User
     {
         try {
             $user->saveOrFail();
         } catch (\Exception $ex) {
-            throw new \Exception($ex->getMessage()); 
+            throw new \Exception($ex->getMessage());
         }
         return $user;
     }
