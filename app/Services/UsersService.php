@@ -43,4 +43,15 @@ class UsersService
         }
         return $user;
     }
+
+    public function delete(User $user): bool
+    {
+        $success = false;
+        try {
+            $success = $user->deleteOrFail();
+        } catch (\Exception $ex) {
+            throw new \Exception($ex->getMessage());
+        }
+        return $success;
+    }
 }

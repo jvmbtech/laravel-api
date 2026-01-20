@@ -86,4 +86,17 @@ class UsersController extends Controller
             ], 500);
         }
     }
+
+    public function destroy(UsersService $userService, int $userId)
+    {
+        try {
+            $user = $userService->findById($userId);
+            $success = $userService->delete($user);
+            return response()->json(['success'=> $success]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error_message' => 'Não foi possível remover o usuário',
+            ], 500);
+        }
+    }
 }
