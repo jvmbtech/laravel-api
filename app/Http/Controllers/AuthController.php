@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -16,7 +17,22 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only(['email', 'password']);
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ], [
+            'required' => 'O parâmetro :attribute é obrigatório',
+            'max' => 'O parâmetro :attribute informado é muito longo',
+        ]);
+ 
+        if ($validator->fails()) {
+            return response()->json([
+                'error_message' => $validator->errors(),
+            ], 422);
+        }
+
+        $credentials = $validator->safe()->only(['email', 'password']);
 
         if (!$token = Auth::guard('api')->attempt($credentials)) {
             return response()->json([
