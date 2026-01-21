@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -16,10 +18,13 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
-        if (!$token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = Auth::guard('api')->attempt($credentials)) {
+            return response()->json([
+                'error_message' => 'Credenciais inválidas'
+            ], 401);
         }
 
+        Log::info('login ' . $credentials['email']);
         return $this->respondWithToken($token);
     }
 
