@@ -13,7 +13,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::middleware('protected')->group(function() {
     Route::get('/users', [UsersController::class, 'index']);
-    Route::post('/users/create', [UsersController::class, 'store']);
+    Route::post('/users', [UsersController::class, 'store']);
     Route::get('/users/{userId}', [UsersController::class, 'show']);
     Route::match(['put', 'patch'], '/users/{userId}', [UsersController::class, 'update']);
     Route::delete('/users/{userId}', [UsersController::class, 'destroy']);

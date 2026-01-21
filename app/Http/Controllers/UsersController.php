@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Services\UsersService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
 {
@@ -14,23 +16,18 @@ class UsersController extends Controller
         return response()->json($users);
     }
 
-    public function store(UsersService $userService, Request $request)
+    public function store(UsersService $userService, StoreUserRequest $request)
     {
         try {
             $user = new User();
-            $user->fill([
-                'name' => $request->input('name'),
-                'email' => $request->input('email'),
-                'password' => $request->input('password'),
-                'cpf' => $request->input('cpf'),
-                'phone' => $request->input('phone'),
-                'cellphone' => $request->input('cellphone'),
-                'role' => 'user',
-            ]);
-
+            $user->fill($request->validated());
+            $user->role = 'user';
+            
             $userService->create($user);
+
             return response()->json($user);
         } catch (\Throwable $th) {
+            Log::error($th->getMessage());
             return response()->json([
                 'error_message' => 'Não foi possível realizar o cadastro de usuário',
             ], 500);
