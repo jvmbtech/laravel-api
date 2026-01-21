@@ -8,18 +8,6 @@ use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
-function authAsUser($test)
-{
-    $user = User::factory()->create();
-
-    $token = JWTAuth::fromUser($user);
-
-    return [
-        'Authorization' => "Bearer {$token}",
-        'Accept'        => 'application/json',
-    ];
-}
-
 test('unatuthenticated user cant get users', function () {
     getJson(
         '/api/users', [

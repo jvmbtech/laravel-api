@@ -11,8 +11,11 @@
 |
 */
 
+use App\Models\User;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -41,7 +44,25 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function authAsUser($test)
 {
-    // ..
+    $user = User::factory()->create();
+
+    $token = JWTAuth::fromUser($user);
+
+    return [
+        'Authorization' => "Bearer {$token}",
+        'Accept'        => 'application/json',
+    ];
+}
+
+function userData() : array {
+    return [
+        'name' => 'John Doe',
+        'email' => 'johndoe@example.com',
+        'password' => 'abc@123',
+        'cpf' => '99999999999',
+        'phone' => '51999999999',
+        'cellphone' => '51999999999',
+    ];
 }
