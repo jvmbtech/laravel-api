@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('complement')->nullable();
             $table->string('postal_code');
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
