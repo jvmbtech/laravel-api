@@ -1,59 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API LARAVEL
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Static Badge](https://img.shields.io/badge/status-em_desenvolvimento-brightgreen?style=for-the-badge)
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> Uma API para gerenciamento de usuários implementada em PHP8.2, Laravel12 e persistência com SQLite.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Funcionalidades
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [x] Autenticação com JWT (login com email e password)
+- [x] Gestão de usuários (cadastro, listagem, edição e remoção)
+- [x] Gestão de endereços de usuários (listagem, cadastro)
+- [ ] Edição de endereço de usuário
+- [ ] Remoção de endereço de um usuário
+- [ ] Atribuição de permição de amdin para usuários
 
-## Learning Laravel
+## Rodando a aplicação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+#### Configurando o ambiente
+Será necessário instalar o [Composer](https://getcomposer.org/download/).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Após instalar o composer, siga as [instruções](https://laravel.com/docs/12.x/installation) para instalação do php(8.2 ou superior) e do Laravel. 
 
-## Laravel Sponsors
+Depois de concluir as instalações, faça o clone do repositório.
+Segue exemplo com https:
+```bash
+git clone https://github.com/jvmbtech/laravel-api.git
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Acesse o folder onde o projeto foi clonado e instale as dependências do mesmo com o comando:
+```bash
+composer install
+```
 
-### Premium Partners
+#### JWT_SECRET
+No folder da aplicação, identifique o arquivo .env que armazena as variáveis de ambiente.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Caso não tenha o arquivo '.env', copie o arquivo '.env.example' e renomeie esta cópia para ser o seu '.env'.
 
-## Contributing
+Abra o arquivo '.env' no seu editor de texto e localize a variável JWT_SECRET, sete um valor para esta variável. Exemplo:
+```
+JWT_SECRET=insira-um-valor-aqui-para-ser-a-sua-chave-secreta 
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Banco de Dados
+Após a instalação das dependências, rode as migrations para configurar o banco de dados:
+```bash
+php artisan migrate
+```
 
-## Code of Conduct
+Opcionalmente você também pode rodar o seeder para preencher o banco com alguns dados para testes:
+```bash
+php artisan db:seed
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Subindo a API
+Após a conclusão da configuração do ambiente vamos subir a api.
 
-## Security Vulnerabilities
+Rode a aplicação utilzando o comando:
+```bash
+php artisan serve --port=8000
+```
+A api vai estar rodando em `http://localhost:8000/api` do seu computador.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Para verificar se a aplicação está funcionando corretamente é possível fazer uma requisição `GET` para o endpoint `/api/status`.
+Segue um exemplo utlizando cURL: 
+```bash
+curl http://127.0.0.1:8000/api/status
+```
 
-## License
+A resposta do endpoint deve ser o JSON:
+```json
+{ "status" : "up" }
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##### Obs:
+Caso tenha rodado o seeder do banco, poderá testar o login o usuário padrão:
+```
+{ "email": "test@example.com", "password": "admin" }
+```
+
+## Testes
+Rode os testes da plicação utilizando o comando:
+```bash
+php artisan test
+```
+
+## Endpoints
+
+| Método  | URL                              | Body
+| ------- | -------------------------------- | ----
+| GET     | /api/status                      |
+| POST    | /api/login                       | { "email": "string", "password": "string" }
+| GET     | /api/users                       |
+| GET     | /api/users/{user_id}             |
+| POST    | /api/users                       | { "name": "string", "email": "string", "password": "string", "cpf": "string", "phone": "string", "cellphone": "string" }
+| PUT     | /api/users/{user_id}             |
+| DELETE  | /api/users/{user_id}             |
+| GET     | /api/users/{user_id}/addresses   |
+| POST    | /api/users/{user_id}/addresses   | { "user_id": "int", "street": "string", "number": "string", "neighborhood": "string", "complement": "string", "postal_code": "string" }
