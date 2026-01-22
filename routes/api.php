@@ -21,7 +21,7 @@ Route::middleware('protected')->group(function() {
     Route::delete('/users/{userId}', [UsersController::class, 'destroy']);
     
     Route::get('/users/{userId}/addresses', [UserAddressesController::class, 'index']);
-    // Route::post('/users/{userId}/address', [UserAddressesController::class, 'store']);
-    // Route::match(['put', 'patch'], '/users/{userId}/address/{addressId}', [UserAddressesController::class, 'update']);
-    // Route::delete('/users/{userId}/address/addressId', [UserAddressesController::class, 'destroy']);
+    Route::post('/users/{userId}/addresses', [UserAddressesController::class, 'store']);
+    // Route::match(['put', 'patch'], '/users/{userId}/addresses/{addressId}', [UserAddressesController::class, 'update']);
+    // Route::delete('/users/{userId}/addresses/addressId', [UserAddressesController::class, 'destroy']);
 });
